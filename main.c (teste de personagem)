@@ -1,0 +1,67 @@
+#include "include/raylib.h"
+#include <stdio.h>
+
+#define ALTURA_CHAO 100
+#define ALTURA_PERSONAGEM 250
+#define LARGURA_PERSONAGEM 105
+
+
+
+
+int main(void) {
+    const int WIDTH = 1366;
+    const int HEIGHT = 768;
+    
+
+    InitWindow(WIDTH, HEIGHT, "DevWindow");
+    SetTargetFPS(60); 
+
+    Texture2D back = LoadTexture("/assets/chao.png");
+    Texture2D player = LoadTexture("/assets/Run.png");
+
+    float player_width = (float)(player.width/8);
+    float player_timer = 0.0f;
+
+    int player_frame = 0;
+    int max_frames = (int)(player.width/(int)player_width);
+    
+    
+
+   
+    
+   
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        player_timer += GetFrameTime();
+
+        if(player_timer >= 0.1f) {
+            player_timer = 0.0f;
+            player_frame += 1;
+        }
+
+        player_frame = player_frame % max_frames; 
+        printf("%d", player_frame);
+
+        Rectangle floor =  (Rectangle){0, 0, GetScreenWidth(), back.height};
+        Vector2 floor_pos = (Vector2){0, GetScreenHeight() - ALTURA_CHAO};
+
+        Rectangle player_rec = (Rectangle){(player_width * player_frame), 0, player_width, (float)player.height};
+        Vector2 player_pos = (Vector2){0, GetScreenHeight() - ALTURA_CHAO - player.height};
+
+        DrawTextureRec(back, floor, floor_pos, RAYWHITE);
+        DrawTextureRec(player, player_rec, player_pos, RAYWHITE);
+        
+        
+
+        EndDrawing();
+       
+    }
+
+    UnloadTexture(back);
+    CloseWindow();        
+
+    return 0;
+}
