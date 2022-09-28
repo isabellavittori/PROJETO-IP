@@ -1,0 +1,69 @@
+#include "include/raylib.h"
+#include <stdio.h>
+
+// #define WIDTH 1366
+// #define HEIGHT 768
+#define ALTURA_CHAO 100
+
+
+
+int main(void) {
+    InitWindow(GetScreenWidth(), GetScreenHeight(), "ACM Fighter");
+    SetTargetFPS(60); 
+   
+    Texture2D fundo = LoadTexture("/assets/background.png");
+    Texture2D back = LoadTexture("/assets/background_chao.png");
+    Texture2D player = LoadTexture("/assets/Run.png");
+    
+    
+
+    float player_width = (float)(player.width/8);
+    float player_timer = 0.0f;
+
+    int player_frame = 0;
+    int max_frames = (int)(player.width/(int)player_width);
+    
+    
+
+   
+    
+   
+
+    while (!WindowShouldClose()) {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
+
+        player_timer += GetFrameTime();
+
+        if(player_timer >= 0.1f) {
+            player_timer = 0.0f;
+            player_frame += 1;
+        }
+
+        player_frame = player_frame % max_frames; 
+        //printf("%d", player_frame);
+
+        Rectangle fundo_rec = (Rectangle){0, 0, GetScreenWidth(), fundo.height};
+        Vector2 fundo_pos = (Vector2){0, GetScreenHeight() - 11*(ALTURA_CHAO)};
+
+        Rectangle floor =  (Rectangle){0, 0, GetScreenWidth(), back.height};
+        Vector2 floor_pos = (Vector2){0, GetScreenHeight() - ALTURA_CHAO - 25};
+
+        Rectangle player_rec = (Rectangle){(player_width * player_frame), 0, player_width, (float)player.height};//sprite movimentando
+        Vector2 player_pos = (Vector2){0, GetScreenHeight() - ALTURA_CHAO - player.height};
+
+        DrawTextureRec(fundo, fundo_rec, fundo_pos, RAYWHITE);
+        DrawTextureRec(back, floor, floor_pos, RAYWHITE);
+        DrawTextureRec(player, player_rec, player_pos, RAYWHITE);
+        
+        
+
+        EndDrawing();
+       
+    }
+
+    UnloadTexture(back);
+    CloseWindow();        
+
+    return 0;
+}
