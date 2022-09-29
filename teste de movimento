@@ -1,0 +1,72 @@
+#include "raylib.h"
+#include "animation.h"
+#include "character.h"
+#include "mapa.h"
+
+#include <stdio.h>
+
+
+int main() {
+    BeginDrawing();
+    SetConfigFlags(FLAG_VSYNC_HINT);
+    SetTargetFPS(60);
+
+    const int screenWidth = GetScreenWidth();
+    const int screenHeight = GetScreenHeight();
+
+    int frame_counter = 0;
+    int frame_speed = 8;
+    int current_frame = 0;
+
+
+    InitWindow(screenWidth, screenHeight, "teste movimento");
+
+    if(!IsWindowFullscreen()) {
+        ToggleFullscreen();
+    }
+
+    Mapa mapas;
+    objPersonagem player;
+    //objPersonagem player_2;
+
+    Rectangle chao = (Rectangle){0, 0, GetScreenWidth(), mapas.chao.height};
+    Vector2 chao_vec = (Vector2){0, GetScreenHeight() - ALTURA_CHAO - 25};
+
+    Rectangle fundo = (Rectangle){0, 0, GetScreenWidth(), mapas.background.height};
+    Vector2 fundo_vec = (Vector2){0, GetScreenHeight() - 11*(ALTURA_CHAO)};
+
+
+    carregarItensMapa(&mapas);
+    iniciarPersonagem(&player, 1, 0);
+
+    while(!WindowShouldClose()){
+        ++frame_counter;
+        if(frame_counter >= (60/frame_speed)) {
+            frame_counter = 0;
+            ++current_frame;
+        }
+
+        float timer = GetFrameTime();
+
+        if(player.vida > 0){
+            atualizarPersongem(&player, chao, timer);
+        }
+        checarParede(&player);
+
+        animacaoPersonagem(&player, frame_counter);
+        DrawTextureRec(mapas.background, fundo, fundo_vec, RAYWHITE);
+        DrawTextureRec(mapas.chao, chao, chao_vec, RAYWHITE);
+
+        EndDrawing();
+
+    }
+
+    descarregarItensMapa(&mapas);
+    terminarAnimacao(&player);
+    CloseWindow();
+   
+    
+
+   return 0; 
+}
+
