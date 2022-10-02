@@ -55,7 +55,6 @@ int main(void)
     unsigned frameIndex = 0;
     unsigned frameDelay = 5;
     unsigned frameDelayContador = 0;
-    int flag = 0;
     
     for(int i = 0; i < 3; i++){
         tiroDireita[i].posicaoDireita = (Vector2) {posicao_personagem.x + 30, posicao_personagem.y + 30 };
@@ -117,22 +116,11 @@ int main(void)
             tempo_Pulo = 0;
             pulo = false;
             velocidade_personagem.y = 0.0f;
-        }
-       // if(IsKeyReleased(KEY_SPACE)){
-       //     tiro = true;
-            //flag = 1;
-       // }
-        
-        //else{
-        //    tiro = false;
-        //}
-        
+        }   
         
         bool movimentacaoPersonagem = velocidade_personagem.x != 0.0f || velocidade_personagem.y != 0.0f;
         
         posicao_personagem = Vector2Add(posicao_personagem, velocidade_personagem);
-        
-        //bool movimentacaoBoladeFogo = velocidade_Bola_de_fogo.x != 0.0f;
         
         frameDelayContador++;
         if(frameDelayContador > frameDelay){
@@ -142,9 +130,6 @@ int main(void)
             frameIndex %= numFrames;
             framePersonagem.x = (float) frameWidth * frameIndex;
         } 
-        //if(flag == 1){
-        //    posicao_Bola_de_fogo = Vector2Add(posicao_Bola_de_fogo, velocidade_Bola_de_fogo);
-      //  }
             
         }
         
@@ -155,21 +140,6 @@ int main(void)
         ClearBackground(RAYWHITE);
 
          DrawTextureRec(personagem, framePersonagem, posicao_personagem, WHITE);
-         //DrawTextureRec(Textura_Bola_de_fogo, Bola_de_fogo, posicao_Bola_de_fogo, WHITE);
-         
-         /*if(tiro){
-            //Texture2D Textura_Bola_de_fogo = LoadTexture("Bola_de_fogo_atual.png");
-            Rectangle Bola_de_fogo = { 0.0f , 0.0f , (float)Textura_Bola_de_fogo.width , (float)Textura_Bola_de_fogo.height};
-            Vector2 posicao_Bola_de_fogo = {posicao_personagem.x , posicao_personagem.y}; 
-            Vector2 velocidade_Bola_de_fogo = {5, 0.0f};
-            posicao_Bola_de_fogo = Vector2Add(posicao_Bola_de_fogo, velocidade_Bola_de_fogo);
-            DrawTextureRec(Textura_Bola_de_fogo, Bola_de_fogo, posicao_Bola_de_fogo, WHITE);
-            //if(!IsKeyDown(KEY_SPACE)){
-              //  tiro = false;
-            //}
-            
-            flag = 1;
-         } */
          
          if(IsKeyPressed(KEY_SPACE) && direita){
              
